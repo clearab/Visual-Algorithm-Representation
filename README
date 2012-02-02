@@ -1,0 +1,16 @@
+Created By: Andrew B. Clear
+
+Project Purpose:
+1) Learn JavaScript by creating a JavaScript driven web application capable of visually representing common CS algorithms.
+2) Create a viable, easy to access teaching tool
+3) Use only native JavaScript (no libraries)
+
+Project Goals:
+1) Implement Quicksort
+2) Implement Selection Sort
+3) Implement Merge Sort
+4) Implement Binary Search Tree Insertion
+5) Implement Binary Search Tree Deletion
+6) Implement Binary Search Tree Searching
+
+Questions and comments: clearab@plu.edu
