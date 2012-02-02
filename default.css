@@ -1,0 +1,88 @@
+/* 
+    Document   : default
+    Created on : Feb 1, 2012, 7:16:44 PM
+    Author     : aclear16
+    Description:
+        Purpose of the stylesheet follows.
+*/
+html {
+	height: 100%;
+	width: 100%;
+	background-color: #F5E78B;
+}
+body {
+	margin: 10px;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+	display: inline;
+	
+}
+div#head { 
+	height: 50px;
+	float:top;
+	background-color: #F5E78B;
+	text-indent: 70px;
+	color: #800000;
+	white-space:nowrap;
+	width: 100%;
+	border-bottom: solid;
+	border-color: #800000;
+	}
+
+div#nav {  
+	float:left; 
+	background-color: #F5E78B;
+	height: 100%;
+	text-indent: 0px;
+	width: 12%;
+	white-space:nowrap;
+	}
+div#nav ul {
+	list-style-type: none;
+	padding-left: 10px;
+	margin-left: 10px;
+}
+div#content {
+	float: left;
+	width: 87.5%;
+	border-left: solid;
+	border-color: #800000;
+	text-indent: 10px;
+	height: 100%;
+	background-color: white;
+}
+div#display {
+	text-align: center;
+	border-bottom: solid;
+	border-color: #800000;
+	height: 200px;
+	
+}
+div#display p {
+	text-align: left;
+}
+div#psuedocode {
+	float: left;
+	width: 50%;
+}
+div#psuedocode ul {
+	padding-left: 10px;
+	margin-left: 10px;
+}
+div#summary {
+	text-align: left;
+	text-indent: 5px;
+	float: right;
+	width: 49%;
+	height: 100%;
+	border-left: solid;
+	border-color: #800000;
+}
+div#summary ol {
+	padding-left: 0px;
+	margin-left: 40px;
+        list-style-type: decimal;
+        display: list-item;
+}
+

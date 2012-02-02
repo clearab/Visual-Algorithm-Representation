@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="default.css" />
+        <script type="text/javascript" src="quickSort.js"></script>
+    </head>
+    <body>
+        <div id="head">
+            <h1>Quicksort</h1>
+        </div>
+        <div id="nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li>Array Based</li>
+                <ul>
+                    <li><a href="quickSort.html">Quick Sort</a></li>
+                    <li>algorithm</li>
+                </ul>
+                <li>Alg type 2</li>
+                <ul>
+                    <li>algorithm</li>
+                    <li>algorithm</li>
+                </ul>
+                <li>Alg type 3</li>
+                <ul>
+                    <li>algorithm</li>
+                    <li>algorithm</li>
+                </ul>
+                <li>FAQ</li>
+                <li><a href="https://docs.google.com/document/d/1GvzFQuMftT6xuyReJHeAEPA01kRfm-pnNjNazdRr-XI/edit" target="_blank" >Requirements</a></li>
+                <li>Design</li>
+                <li>Journal</li>
+                <li><a href="mailto:varalgrep@yahoo.com?Subject=Contact">Contact Us</a></li>
+            </ul>
+        </div>
+        <div id="content">
+            <div id="display">
+                <p>
+                    <button type="button" onclick="randomize()">Random</button>
+                    <button type="button" onclick="runQuicksort()">Start</button>
+                    <button type="button" onclick="pause()">Pause</button>
+                    <span>Speed:</span> 
+                    <input id="speed" type="range" min="0" max="100" value="50" step="1" onchange="showValue(this.value)" />
+                    <span id="range">50</span>
+                </p>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width=500px height="200">
+                <g id="simulationArea">
+                </g>
+                </svg>
+            </div>  
+            <div id = "psuedocode">
+                <ul type = "none">
+                    <li id = "l0">function partition(array,'left','right','pivotIndex')</li>
+                    <ul type = "none">
+                        <li id = "l1">pivotValue = array[pivotIndex]</li>
+                        <li id = "l2">swap array[pivotIndex] and array[right]</li>
+                        <li id = "l3">'storeIndex' = 'left'</li>
+                        <li id = "l4">for 'index' from 'left' to 'right'</li>
+                        <ul list style type = "none">
+                            <li id = "l5">if array['index'] < 'pivotValue'</li>
+                            <ul type = "none">
+                                <li id = "l6">swap array['index'] and array['storeIndex']</li>
+                                <li id = "l7">'storeIndex' = 'storeIndex' + 1</li>
+                            </ul>  
+                        </ul>
+                        <li id = "l8">swap array['storeIndex'] and array['right']</li>
+                        <li id = "l9">return 'storeIndex'</li>
+                    </ul>
+                    <li id = "l10"> function quicksort(array,'left','right')</li>
+                    <ul type = "none">
+                        <li id = "l11">if 'left'<'right'</li>
+                        <ul type = "none">
+                            <li id = "l12">select the 'pivotIndex'</li>
+                            <li id = "l13">'newPivotIndex' = partition(array,'left','right','pivotIndex')</li>
+                            <li id = "l14">quicksort(array, 'left','newPivotIndex' - 1</li>
+                            <li id = "l15">quicksort(array, 'newPivotIndex', 'right')</li>
+                        </ul>
+                    </ul>
+                </ul>
+            </div>
+            <div id = "summary">
+                <ol id ="summaryOL">
+                </ol>
+            </div>
+        </div>
+    </body>
+</html>
