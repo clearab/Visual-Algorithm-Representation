@@ -6,24 +6,36 @@ var animationPlace = 0;
 var speed = 1000;
 var isPaused = false;
 var isRunning;
+var COLOR_DARK = "black";
+var COLOR_DIM = "papayawhip"
+var COLOR_TEXT_HIGHLIGHT = "orangered";
+var COLOR_BAR_HIGHLIGHT1 = "red";
+var COLOR_BAR_HIGHLIGHT2 = "cyan";
+var ARRAY_SIZE = 15;
  
 window.onload = function init(){
     createArray();
     draw();
 }
-function showValue(newValue) {
-    document.getElementById("range").innerHTML=newValue;
-    speed = 2000 - (20 * newValue);
+function showValue(newValue, id) {
+    document.getElementById(id).innerHTML=newValue;
+    if(id == 'speedRange') {
+        speed = 2000 - (20 * newValue);
+    }
 }
 function randomize() {
-    createArray();
     clear();
+    ARRAY_SIZE = document.getElementById('arraySizeRange').innerHTML;
+    createArray();
     draw();
     animationPlace = 0;
     animationArray = new Array();
 }
 function createArray() {
-    for(i=0;i<15;i++){
+    if(rectArray.length != 0) {
+        rectArray.splice(0,rectArray.length -1);
+    }
+    for(i=0;i<ARRAY_SIZE;i++){
         var a = Math.floor(Math.random()*101)
         if (a > 5) {
             rectArray[i] = a;
@@ -34,9 +46,11 @@ function createArray() {
     }
 }
 function draw() {
+    var xConstant = rectArray.length-15;
+    var initialX = 250 - (Math.floor(16.6 * xConstant));
     for(i=0;i<rectArray.length;i++) {
-        createText(i,rectArray[i]);
-        createRect(i,rectArray[i]);
+        createText(i,rectArray[i], initialX);
+        createRect(i,rectArray[i], initialX);
     }
 }
 function arraySwap(a,b) {
@@ -74,20 +88,20 @@ function clear() {
         t.parentNode.removeChild(t);
     }
 }
-function createRect(id,height) {
+function createRect(id,height, initialX) {
     var newRect = document.createElementNS(svgNS,"rect");
     var newId = "rect_" + id;
-    var xCoord = id*30;
+    var xCoord = initialX + id*30;
     newRect.setAttribute("id",newId);
     newRect.setAttribute("width",25);
     newRect.setAttribute("height",height);
     newRect.setAttribute("x",xCoord);
     newRect.setAttribute("y",50);
-    newRect.setAttribute("fill","black");
+    newRect.setAttribute("fill",COLOR_DARK);
     document.getElementById("simulationArea").appendChild(newRect);
 }
-function createText(id,value) {
-    var a = id*30+14;
+function createText(id,value, initialX) {
+    var a = initialX + id*30+14;
     var newText = document.createElementNS(svgNS,"text");
     var newId = "text_" + id;
     newText.setAttribute("id",newId);
@@ -95,7 +109,7 @@ function createText(id,value) {
     newText.setAttribute("y",42);
     newText.setAttribute("font-size","11px");
     newText.setAttribute("text-anchor","middle");
-    newText.setAttribute("fill","black");
+    newText.setAttribute("fill",COLOR_DARK);
     var textNode = document.createTextNode(value);
     newText.appendChild(textNode);
     document.getElementById("simulationArea").appendChild(newText);
@@ -124,7 +138,7 @@ function animationManager() {
         }
         if (nextObject.name == "reset") {
             for(var j = 0;j < rectArray.length;j++) {
-                changeColor("rect_" + j,"black");
+                changeColor("rect_" + j,COLOR_DARK);
             }
             var w = document.getElementById("summaryOL");
             
@@ -142,6 +156,16 @@ function animationManager() {
             newText = document.createTextNode(nextObject.txt);
             newLI.appendChild(newText);
             x.appendChild(newLI);
+        }
+        if (nextObject.name == "dim") {
+            for(var k = 0; k < nextObject.frIndex; k++) {
+                changeColor("rect_" + k, COLOR_DIM);
+            }
+            if (nextObject.toIndex != rectArray.length-1) {
+                for(var l = nextObject.toIndex + 1; l < rectArray.length;l++) {
+                    changeColor("rect_" + l, COLOR_DIM);
+                }
+            }
         }
       
         animationPlace++;
@@ -166,90 +190,95 @@ function AnimationObject() {
     if (arguments[0] == "summary") {
         this.txt = arguments[1];
     }
+    if (arguments[0] == "dim") {
+        this.frIndex = arguments[1];
+        this.toIndex = arguments[2];
+    }
 }
 function quicksort(array, left, right) {
-    animationArray.push(new AnimationObject("psuedo","l10","orangered"));
-    animationArray.push(new AnimationObject("psuedo","l11","orangered"));
+    animationArray.push(new AnimationObject("psuedo","l10",COLOR_TEXT_HIGHLIGHT));
+    animationArray.push(new AnimationObject("psuedo","l11",COLOR_TEXT_HIGHLIGHT));
     if (left < right) {
-        animationArray.push(new AnimationObject("psuedo","l12","orangered"));
+        animationArray.push(new AnimationObject("psuedo","l12",COLOR_TEXT_HIGHLIGHT));
         var pivotIndex = Math.ceil((left + right)/2);
-        animationArray.push(new AnimationObject("psuedo","l13","orangered"));
+        animationArray.push(new AnimationObject("psuedo","l13",COLOR_TEXT_HIGHLIGHT));
         var pivotNewIndex = partition(array, left, right, pivotIndex);
-        animationArray.push(new AnimationObject("psuedo","l13","black"));
-        animationArray.push(new AnimationObject("psuedo","l14","orangered"));
+        animationArray.push(new AnimationObject("psuedo","l13",COLOR_DARK));
+        animationArray.push(new AnimationObject("psuedo","l14",COLOR_TEXT_HIGHLIGHT));
         quicksort(array, left, pivotNewIndex - 1);
-        animationArray.push(new AnimationObject("psuedo","l14","black"));
-        animationArray.push(new AnimationObject("psuedo","l15","orangered"));
+        animationArray.push(new AnimationObject("psuedo","l14",COLOR_DARK));
+        animationArray.push(new AnimationObject("psuedo","l15",COLOR_TEXT_HIGHLIGHT));
         quicksort(array, pivotNewIndex + 1, right);
-        animationArray.push(new AnimationObject("psuedo","l15","black"));
+        animationArray.push(new AnimationObject("psuedo","l15",COLOR_DARK));
     }
-    animationArray.push(new AnimationObject("psuedo","l10","black"));
-    animationArray.push(new AnimationObject("psuedo","l11","black"));
-    animationArray.push(new AnimationObject("psuedo","l12","black"));
+    animationArray.push(new AnimationObject("psuedo","l10",COLOR_DARK));
+    animationArray.push(new AnimationObject("psuedo","l11",COLOR_DARK));
+    animationArray.push(new AnimationObject("psuedo","l12",COLOR_DARK));
 }
 function partition(array, left, right, pivotIndex) {
     var pause = new AnimationObject("pause");
     var reset = new AnimationObject("reset");
-  
-    animationArray.push(new AnimationObject("highlight2","rect_" + left,"rect_" + right,"red"));
-    animationArray.push(new AnimationObject("summary","Partition from " + left + " to " + right));
-    animationArray.push(new AnimationObject("psuedo","l0","orangered"));
+    
+    animationArray.push(new AnimationObject("dim",left,right));
+    animationArray.push(new AnimationObject("highlight2","rect_" + left,"rect_" + right,COLOR_BAR_HIGHLIGHT1));
+    animationArray.push(new AnimationObject("summary","Partition from index " + left + " to index " + right));
+    animationArray.push(new AnimationObject("psuedo","l0",COLOR_TEXT_HIGHLIGHT));
     animationArray.push(pause);
   
     var pivotValue = array[pivotIndex];
-    animationArray.push(new AnimationObject("highlight1","rect_" + pivotIndex,"cyan"));
+    animationArray.push(new AnimationObject("highlight1","rect_" + pivotIndex,COLOR_BAR_HIGHLIGHT2));
     animationArray.push(new AnimationObject("summary","Pivot value is now: " + pivotValue));
-    animationArray.push(new AnimationObject("psuedo","l1","orangered"));
+    animationArray.push(new AnimationObject("psuedo","l1",COLOR_TEXT_HIGHLIGHT));
     animationArray.push(pause);
-    animationArray.push(new AnimationObject("psuedo","l1","black"));
+    animationArray.push(new AnimationObject("psuedo","l1",COLOR_DARK));
   
     arraySwap(pivotIndex,right);
-    animationArray.push(new AnimationObject("highlight1","rect_" + right,"black"));
+    animationArray.push(new AnimationObject("highlight1","rect_" + right,COLOR_DARK));
     animationArray.push(new AnimationObject("swap",pivotIndex,right));
-    animationArray.push(new AnimationObject("highlight1","rect_" + right,"red"));
-    animationArray.push(new AnimationObject("psuedo","l2","orangered"));
+    animationArray.push(new AnimationObject("highlight1","rect_" + right,COLOR_BAR_HIGHLIGHT1));
+    animationArray.push(new AnimationObject("psuedo","l2",COLOR_TEXT_HIGHLIGHT));
     animationArray.push(pause);
-    animationArray.push(new AnimationObject("psuedo","l2","black"));
+    animationArray.push(new AnimationObject("psuedo","l2",COLOR_DARK));
   
     var storeIndex = left;
-    animationArray.push(new AnimationObject("highlight1","text_" + storeIndex,"red"));
-    animationArray.push(new AnimationObject("highlight1","rect_" + right,"cyan"));
-    animationArray.push(new AnimationObject("psuedo","l4","orangered"));
-    animationArray.push(new AnimationObject("psuedo","l5","orangered"));
+    animationArray.push(new AnimationObject("highlight1","text_" + storeIndex,COLOR_BAR_HIGHLIGHT1));
+    animationArray.push(new AnimationObject("highlight1","rect_" + right,COLOR_BAR_HIGHLIGHT2));
+    animationArray.push(new AnimationObject("psuedo","l4",COLOR_TEXT_HIGHLIGHT));
+    animationArray.push(new AnimationObject("psuedo","l5",COLOR_TEXT_HIGHLIGHT));
     for (var i = left;i<right;i++) {
-        animationArray.push(new AnimationObject("highlight1","rect_" + i,"cyan"));
+        animationArray.push(new AnimationObject("highlight1","rect_" + i,COLOR_BAR_HIGHLIGHT2));
         animationArray.push(pause);
     
         if (array[i] < pivotValue) {
             animationArray.push(new AnimationObject("summary",array[i] + " < pivot, so swap with store index"));
-            animationArray.push(new AnimationObject("highlight1","text_" + storeIndex,"black"));
+            animationArray.push(new AnimationObject("highlight1","text_" + storeIndex,COLOR_DARK));
             arraySwap(i,storeIndex);
             animationArray.push(new AnimationObject("swap",i,storeIndex));
-            animationArray.push(new AnimationObject("psuedo","l6","orangered"));
+            animationArray.push(new AnimationObject("psuedo","l6",COLOR_TEXT_HIGHLIGHT));
             animationArray.push(pause);
-            animationArray.push(new AnimationObject("psuedo","l6","black"));
-            animationArray.push(new AnimationObject("highlight1","rect_" + storeIndex,"black"));
+            animationArray.push(new AnimationObject("psuedo","l6",COLOR_DARK));
+            animationArray.push(new AnimationObject("highlight1","rect_" + storeIndex,COLOR_DARK));
             
             storeIndex = storeIndex + 1;
-            animationArray.push(new AnimationObject("highlight1","text_" + storeIndex,"red"));
+            animationArray.push(new AnimationObject("highlight1","text_" + storeIndex,COLOR_BAR_HIGHLIGHT1));
         }
         else {
-            animationArray.push(new AnimationObject("highlight1","rect_" + i,"black"));
+            animationArray.push(new AnimationObject("highlight1","rect_" + i,COLOR_DARK));
             animationArray.push(new AnimationObject("summary",array[i] + " >= pivot, do nothing"));
             animationArray.push(pause);
         }
     }
-    animationArray.push(new AnimationObject("psuedo","l4","black"));
-    animationArray.push(new AnimationObject("psuedo","l5","black"));
-    animationArray.push(new AnimationObject("highlight1","text_" + storeIndex,"black"));
+    animationArray.push(new AnimationObject("psuedo","l4",COLOR_DARK));
+    animationArray.push(new AnimationObject("psuedo","l5",COLOR_DARK));
+    animationArray.push(new AnimationObject("highlight1","text_" + storeIndex,COLOR_DARK));
     arraySwap(storeIndex,right);
-    animationArray.push(new AnimationObject("psuedo","l8","orangered"));
+    animationArray.push(new AnimationObject("psuedo","l8",COLOR_TEXT_HIGHLIGHT));
     animationArray.push(new AnimationObject("summary","Swap the pivot into its final place (at store index)"));
     animationArray.push(new AnimationObject("swap",storeIndex,right));
     animationArray.push(pause);
     animationArray.push(reset);
-    animationArray.push(new AnimationObject("psuedo","l0","black"));
-    animationArray.push(new AnimationObject("psuedo","l8","black"));
+    animationArray.push(new AnimationObject("psuedo","l0",COLOR_DARK));
+    animationArray.push(new AnimationObject("psuedo","l8",COLOR_DARK));
     return storeIndex;
 }
 function runQuicksort() {

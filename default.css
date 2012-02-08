@@ -2,8 +2,6 @@
     Document   : default
     Created on : Feb 1, 2012, 7:16:44 PM
     Author     : aclear16
-    Description:
-        Purpose of the stylesheet follows.
 */
 html {
 	height: 100%;
@@ -69,6 +67,7 @@ div#psuedocode {
 div#psuedocode ul {
 	padding-left: 10px;
 	margin-left: 10px;
+        font-family: "Courier New";
 }
 div#summary {
 	text-align: left;

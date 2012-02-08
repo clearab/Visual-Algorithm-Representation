@@ -41,11 +41,18 @@
                     <button type="button" onclick="randomize()">Random</button>
                     <button type="button" onclick="runQuicksort()">Start</button>
                     <button type="button" onclick="pause()">Pause</button>
+                    &nbsp;
                     <span>Speed:</span> 
-                    <input id="speed" type="range" min="0" max="100" value="50" step="1" onchange="showValue(this.value)" />
-                    <span id="range">50</span>
+                    <input id="speed" type="range" min="0" max="100" value="50" step="1" onchange="showValue(this.value, 'speedRange')" />
+                    <span id="speedRange">50</span>
+                    &nbsp;
+                    <span>Array Size:</span>
+                    <input id ="arraySize" type ="range" min ="5" max ="30" value="15" step="1" onchange="showValue(this.value,'arraySizeRange')" />
+                    <span id="arraySizeRange">15</span>
+                    (to redraw array, click "randomize")
+                    
                 </p>
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width=500px height="200">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="200">
                 <g id="simulationArea">
                 </g>
                 </svg>
