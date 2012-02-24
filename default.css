@@ -14,6 +14,7 @@ body {
 	height: 100%;
 	width: 100%;
 	display: inline;
+        font-family: "verdana"
 	
 }
 div#head { 
@@ -68,6 +69,7 @@ div#psuedocode ul {
 	padding-left: 10px;
 	margin-left: 10px;
         font-family: "Courier New";
+        font-size: 15px;
 }
 div#summary {
 	text-align: left;

@@ -8,7 +8,7 @@
     </head>
     <body>
         <div id="head">
-            <h1>Quicksort</h1>
+            <h1>Selection Sort</h1>
         </div>
         <div id="nav">
             <ul>
@@ -29,7 +29,7 @@
             <div id="display">
                 <p>
                     <button type="button" onclick="randomize()">Random</button>
-                    <button type="button" onclick="runQuicksort()">Start</button>
+                    <button type="button" onclick="runSelectionSort()">Start</button>
                     <button type="button" onclick="pause()">Pause</button>
                     &nbsp;
                     <span>Speed:</span> 
@@ -48,31 +48,20 @@
                 </svg>
             </div>  
             <div id = "psuedocode">
-                <ul type = "none">
-                    <li id = "l0"><b>function partition</b>(<i>array</i>,<i>left</i>,<i>right</i>,<i>pivotIndex</i>)</li>
-                    <ul type = "none">
-                        <li id = "l1"><i>pivotValue</i> = array[<i>pivotIndex</i>]</li>
-                        <li id = "l2"><b>swap</b> array[<i>pivotIndex</i>] and array[<i>right</i>]</li>
-                        <li id = "l3"><i>storeIndex</i> = <i>left</i></li>
-                        <li id = "l4"><b>for</b> <i>index</i> from <i>left</i> to <i>right</i></li>
-                        <ul type = "none">
-                            <li id = "l5"><b>if</b> (array[<i>index</i>] < <i>pivotValue</i>)</li>
-                            <ul type = "none">
-                                <li id = "l6"><b>swap</b> array[<i>index</i>] and array[<i>storeIndex</i>]</li>
-                                <li id = "l7"><i>storeIndex</i> = <i>storeIndex</i> + 1</li>
-                            </ul>  
-                        </ul>
-                        <li id = "l8"><b>swap</b> array[<i>storeIndex</i>] and array[<i>right</i>]</li>
-                        <li id = "l9"><b>return</b> <i>storeIndex</i></li>
-                    </ul>
-                    <li id = "l10"> <b>function quicksort</b>(<i>array</i>,<i>left</i>,<i>right</i>)</li>
-                    <ul type = "none">
-                        <li id = "l11"><b>if</b> (<i>left</i><<i>right</i>)</li>
-                        <ul type = "none">
-                            <li id = "l12">select the <i>pivotIndex</i></li>
-                            <li id = "l13"><i>newPivotIndex</i> = partition(array,<i>left</i>,<i>right</i>,<i>pivotIndex</i>)</li>
-                            <li id = "l14">quicksort(array, <i>left</i>,<i>newPivotIndex</i> - 1</li>
-                            <li id = "l15">quicksort(array, <i>newPivotIndex</i>, <i>right</i>)</li>
+                <ul type="none">
+                    <li id="l0"><b>function selectionSort(</b><i>array</i><b>)</b></li>
+                    <ul type="none">
+                        <li id="l1"><b>for</b>(<i>outerIndex</i> from 0 to <i>array.length-2</i>)</li>
+                        <ul type="none">
+                            <li id="l2"><i>minIndex</i> = <i>outerIndex</i></li>
+                            <li id="l3"><b>for</b>(<i>innerIndex</i> from <i>outerIndex</i> to <i>array.length-1</i>)</li>
+                            <ul type="none">
+                                <li id="l4"><b>if</b> (<i>array[innerIndex]</i> < <i>array[minIndex]</i>) </li>
+                                <ul type="none">
+                                    <li id="l5"><i>minIndex</i> = <i>innerIndex</i></li>
+                                </ul>
+                            </ul>
+                            <li id="l6"><b>swap</b>(<i>array[outerIndex]</i>,<i>array[minIndex]</i>)</li>
                         </ul>
                     </ul>
                 </ul>
