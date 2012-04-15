@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="treeCSS.css" />
+    <script type="text/javascript" src="treeNoArray.js"></script>
+  </head>
+  <body>
+    <div id="head">
+      <h1>Binary Search Tree: Insertion</h1>
+    </div>
+    <div id="nav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quickSort.html">Quick Sort</a></li>
+        <li><a href="selectionSort.html">Selection Sort</a></li>
+        <li><a href="tree.html">BST Insertion</a></li>
+        <li>algorithm</li>
+        <li>algorithm</li>
+        <li>algorithm</li>
+        <li>FAQ</li>
+        <li><a href="DesignDocument.html">Design</a></li>
+        <li>Journal</li>
+        <li><a href="mailto:varalgrep@yahoo.com?Subject=Contact">Contact Us</a></li>
+      </ul>
+    </div>
+    <div id="content">
+      <div id="display">
+        <p>
+          <button type="button" onclick="insertSingleNode()">Insert</button>
+          <input type="text" id="insertValue" size="3" onchange=""/>
+          <button type="button" onclick="pause()">Pause/Resume</button>
+          &nbsp;
+          <button type="button" onclick="randomTree()">Random Tree</button>
+          <span>Tree Size:</span>
+          <input id ="treeSize" type ="range" min ="1" max ="10" value="5" step="1" onchange="showValue(this.value,'treeSizeRange')" />
+          <span id="treeSizeRange">5</span>
+          &nbsp;
+          <span>Speed:</span>
+          <input id="speed" type="range" min="0" max="100" value="50" step="1" onchange="showValue(this.value, 'speedRange')" />
+          <span id="speedRange">50</span>
+        </p>
+        <svg id="svgArea" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="300" viewBox="0 0 1000 300">
+        <g id="simulationArea">
+        </g>
+        </svg>
+      </div>  
+      <div id = "psuedocode">
+        <ul type = "none">
+          <li id = "l0"><b>function insert</b>(<i>newNode</i>,<i>currNode</i>)</li>
+          <ul type = "none">
+            <li id = "l1">if(<i>currNode</i> == null)</li>
+            <ul type ="none">
+              <li id="l2"><i>currNode</i> = <i>newNode</i></li>
+            </ul>
+            <li id = "l3">else if(<i>newNode.value</i> < <i>currNode.value</i>)</li>
+            <ul type ="none">
+              <li id="l4">insert(<i>newNode</i>, <i>currNode.left</i>)</li>
+            </ul>
+            <li id = "l5">else if(<i>newNode.value</i> > <i>currNode.value</i>)</li>
+            <ul type ="none">
+              <li id="l6">insert(<i>newNode</i>, <i>currNode.right</i>)</li>
+            </ul>
+            <li id="l7">else</li>
+            <ul type ="none">
+              <li id="l8">message: "That value is already in the tree."</li>
+            </ul>
+          </ul>
+        </ul>
+
+            </div>
+            <div id = "summary">
+              <ol id ="summaryOL">
+              </ol>
+            </div>
+            </div>
+            </body>
+            </html>
