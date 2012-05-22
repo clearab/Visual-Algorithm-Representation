@@ -1,0 +1,15 @@
+title: Visual Algorithms Representations
+author: Andrew Clear, BS Mathematics, BA Computer Science
+organization: Pacific Lutheran University
+
+********************************************************************************************************************************
+Things To Do:
+-Remove pause button from BST VAR's
+-Add highlight for node when being placed
+-Disable buttons when VAR is running for BST's
+-Implement delete
+	-add "remove" AnimationObject ??
+-Implement traversals
+-BST Deletion BUG: delete after random tree not working? id issue?
+	-randomTree() is buggy as all get out, timing issues with setTimeout()
+-change draw all to recalc whenever height is different

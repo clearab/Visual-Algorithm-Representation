@@ -9,8 +9,8 @@ var COLOR_DARK= "black";
 var COLOR_BRIGHT="red";
 var height = 0;
 var speed = 1000;
-var treeArray = new Array();
-var animationArray = new Array();
+var treeArray = [];
+var animationArray = [];
 var animationPlace = 0;
 var isPaused = false;
 var isRunning;
@@ -21,7 +21,7 @@ var redrawAll = false;
 var w=window,d=document,e=d.documentElement,g=d.getElementsByTagName('body')[0],x=w.innerWidth||e.clientWidth||g.clientWidth,y=w.innerHeight||e.clientHeight||g.clientHeight;
 
 window.onload = function (){
-  reset();
+	reset();
 }
 function showValue(newValue, id) {
   document.getElementById(id).innerHTML=newValue;
@@ -29,27 +29,25 @@ function showValue(newValue, id) {
     speed = 2000 - (20 * newValue);
   }
 }
-//This method should call a draw method without
-//any animations
-function randomTree() {
-  reset();
-  var currSpeed = speed;
-  COLOR_BRIGHT = "cyan";
-  //speed up so you can't see the animations
-  speed = 1;
-  var size = document.getElementById('treeSizeRange').innerHTML
-  var i = 0;
-  while (i < size) {
-    var newVal = Math.floor(Math.random()*101)
+function randomTree(i) {
+	clear();
+	reset();
+	randomTreeInner(i);
+}
+/**
+*  Really buggy, due to timing issues
+*/
+function randomTreeInner(i) {
+  var size = document.getElementById('treeSizeRange').innerHTML;
+  //var i = 0;
+  if (i < size) {
+    var newVal = Math.floor(Math.random()*101);
     if (!treeArray.include(newVal)&& newVal != 0) {
       insertNode(newVal);
       i++;
     }
+		var qwerty = setTimeout("randomTreeInner(" + i + ")",(500 * i) + speed);
   }
-  COLOR_BRIGHT = "red";
-  animationArray.push(new AnimationObject("pause"));
-  animationArray.push(new AnimationObject("reset"));
-  speed = currSpeed;
 }
 function insertSingleNode() {
   var value = document.getElementById('insertValue').value;
@@ -57,22 +55,46 @@ function insertSingleNode() {
   if(value >=0 && value <=100 && value!="") {
     insertNode(value);
   }
-  else
+  else {
     alert("Please enter a number between 0 and 100");
+	}
+}
+function deleteSingleNode() {
+	var value = document.getElementById('insertValue').value;
+	value=parseFloat(value);
+	if(value >=0 && value <=100 && value!="") {
+    deleteNode(value);
+  }
+  else {
+    alert("Please enter a number between 0 and 100");
+	}
+}
+function TreeNode(value){
+  this.id=0;
+  this.value=value;
+  this.level=0;
+  this.x=0;
+  this.y=0;
+  this.left=null;
+  this.right=null;
 }
 function recalc(cNode,pNode,side) {
-  if(cNode==root){
-    if(SVGWidth <= 1000)
-      cNode.x=.5*1000;
-    else
-      cNode.x=.5*SVGWidth;
+  if(cNode == root) {
+    if(SVGWidth <= 1000) {
+      cNode.x = 0.5 * 1000;
+		}
+    else {
+      cNode.x = 0.5 * SVGWidth;
+		}
   }
   else {
     if(side=="left") {
       cNode.x=pNode.x-(1/Math.pow(2,cNode.level+1))*SVGWidth;
+			cNode.y=pNode.y+2*circRad+10;
     }
     if(side=="right") {
       cNode.x=pNode.x+(1/Math.pow(2,cNode.level+1))*SVGWidth;
+			cNode.y=pNode.y+2*circRad+10;
     }
   }
   if(cNode.left!=null) {
@@ -90,8 +112,9 @@ function insertNode(value){
   if(currHeight!=height){
     redrawAll = true;
     var currWidth=Math.pow(2,height+1)*circRad;
-    if(currWidth>SVGWidth)
+    if(currWidth > SVGWidth) {
       SVGWidth=currWidth;
+		}
     if(SVGWidth>1000){
       var a = document.getElementById('svgArea');
       SVGVert += 300;
@@ -100,15 +123,6 @@ function insertNode(value){
     recalc(root);
   }
   animationManager();
-}
-function TreeNode(value){
-  this.id=0;
-  this.value=value;
-  this.level=0;
-  this.x=0;
-  this.y=0;
-  this.left=null;
-  this.right=null;
 }
 function insert(nNode,cNode,pNode,side) {
   //if cNode is null, this is where the nNode goes
@@ -131,9 +145,9 @@ function insert(nNode,cNode,pNode,side) {
     }
     //root node
     else {
-      nNode.x=.5*1000;
-      nNode.y=circRad+10;
-      root=nNode;
+      nNode.x = 0.5 * 1000;
+      nNode.y = circRad + 10;
+      root = nNode;
       treeArray.push(nNode.value);
       animationArray.push(new AnimationObject("draw",nNode));
       animationArray.push(new AnimationObject("summary","Assigning root."));
@@ -191,37 +205,137 @@ function insert(nNode,cNode,pNode,side) {
   }
   
 }
+function deleteNode(value) {
+	//animationArray.push(new AnimationObject("reset"));
+	currHeight = height;
+	deleteNodeInner(value,root,null,null);
+	if(currHeight != height){
+    redrawAll = true;
+    var currWidth = Math.pow(2,height + 1) * circRad;
+    if(currWidth < SVGWidth) {
+      SVGWidth = currWidth;
+		}
+    if(SVGWidth<1000){
+      var a = document.getElementById('svgArea');
+      SVGVert = 300;
+      a.setAttribute("viewBox","0 0 1000 300");
+    }
+    recalc(root);
+  }
+  animationManager();
+}
+function deleteNodeInner(value,currNode, pNode, side){
+  //value found, delete it
+	if (currNode.value == value) {
+		height--;
+		//highlight currNode
+		//two children case
+		if (currNode.left != null && currNode.right != null) {
+			//find leftmost node of right subtree
+			
+		}
+		//one child cases
+		else if (currNode.left != null) {
+			//if left child is a leaf node
+			if(currNode.left.left == null && currNode.left.right == null) {
+				pNode.left=currNode.left;
+				pNode.left.level--;
+				recalc(root);
+				treeArray[treeArray.index(value)]=null;
+				drawAll();
+			}
+			//if right child is not a leaf node
+			else {
+			
+			}
+		}
+		else if (currNode.right != null) {
+			//if right child is a leaf node
+			if(currNode.right.left == null && currNode.right.right == null) {
+				pNode.left=currNode.right;
+				pNode.left.level--;
+				recalc(root);
+				treeArray[treeArray.index(value)]=null;
+				drawAll();
+			}
+			//if right child is not a leaf node
+			else {
+			
+			}
+		}
+		//leaf node case
+		else {
+			remove(currNode, pNode, side);
+		}
+	}
+	else if (value < currNode.value && currNode.left!=null) {
+		//recurse left
+		deleteNodeInner(value,currNode.left,currNode,"left");
+	}
+	else if (value > currNode.value && currNode.right!=null) {
+		//recurse right
+		deleteNodeInner(value,currNode.right,currNode,"right");
+	}
+	else {
+		//message value not in tree!
+	}
+}
+function remove(currNode,pNode,side) {
+	if (currNode == root) {
+		reset();
+		drawAll();
+	}
+	else {
+		//remove line
+		var a = document.getElementById(side+pNode.value);
+		a.parentNode.removeChild(a);
+		//remove node
+		a = document.getElementById(currNode.value);
+		a.parentNode.removeChild(a);
+		//remove text
+		a = document.getElementById("txt"+currNode.value);
+		a.parentNode.removeChild(a);
+		//remove from array
+		a= treeArray.index(currNode.value);
+		treeArray[a]=null;
+		//remove node from tree
+		if(side == "left") {
+		  pNode.left = null;
+			}
+		else {
+			pNode.right = null;
+			}
+		}
+}
+/**
+*Should really replace this by redrawing only the nodes that
+*have moved using drawOne(). ??
+*/
 function drawAll() {
   clear();
-  var i = 0;
-  var j = 0;
-  function drawLines(currNode,i) {
+  function drawLines(currNode) {
     if(currNode.left!=null){
       drawLine("left"+currNode.value,currNode.x,currNode.y,currNode.left.x,currNode.left.y);
-      i++;
-      drawLines(currNode.left,i);
+      drawLines(currNode.left);
     }
     if(currNode.right!=null) {
       drawLine("right"+currNode.value,currNode.x,currNode.y,currNode.right.x,currNode.right.y);
-      i++;
-      drawLines(currNode.right,i);
+      drawLines(currNode.right);
     }
   }
-  function drawCircles(currNode,j) {
+  function drawCircles(currNode) {
     if(currNode.value!=null) {
       drawCircle(currNode.value,currNode.x,currNode.y,circRad,currNode.value,COLOR_FILL,COLOR_DARK);
-      j++;
       if(currNode.left!=null){
-        drawCircles(currNode.left,j);
+        drawCircles(currNode.left);
       }
       if(currNode.right!=null) {
-        drawCircles(currNode.right,j);
+        drawCircles(currNode.right);
       }
     }
-    
   }
-  drawLines(root,i);
-  drawCircles(root,j);
+  drawLines(root);
+  drawCircles(root);
 }
 function drawOne(nNode,pNode,side){
   //remove pNode
@@ -233,9 +347,9 @@ function drawOne(nNode,pNode,side){
   }
   if(pNode!=null){
     
-    var anc = document.getElementById(pNode.value)
+    var anc = document.getElementById(pNode.value);
     anc.parentNode.removeChild(anc);
-    drawLine(side+""+pNode.value,pNode.x,pNode.y,nNode.x,nNode.y);
+    drawLine(side + "" + pNode.value,pNode.x,pNode.y,nNode.x,nNode.y);
     //draw pNode
     drawCircle(pNode.value,pNode.x,pNode.y,circRad,pNode.value,COLOR_FILL,COLOR_DARK);
   }
@@ -252,7 +366,7 @@ function drawOne(nNode,pNode,side){
 function AnimationObject(name) {
   this.name=name;
   if(name=="draw"){
-    this.nNode=arguments[1];
+    this.nNode = arguments[1];
     if(arguments.length>1){
       this.pNode=arguments[2];
       this.side=arguments[3];
@@ -336,7 +450,7 @@ function drawCircle(id,x,y,radius,value,fillColor,strokeColor) {
   newCircle.setAttribute("stroke",strokeColor);
   document.getElementById("simulationArea").appendChild(newCircle);
   var newText = document.createElementNS(svgNS,"text");
-  newText.setAttribute("id","value"+id);
+  newText.setAttribute("id","txt"+id);
   newText.setAttribute("x",x);
   newText.setAttribute("y",y+3);
   newText.setAttribute("font-size","11px");
@@ -376,12 +490,11 @@ function reset() {
   a.setAttribute("viewBox","0 0 1000 300");
 }
 Array.prototype.index = function(val) {
-  for(var i = 0, l = this.length; i < l; i++) {
+  for(var i = 0;i < this.length; i++) {
     if(this[i] == val) return i;
   }
   return null;
 }
-
 Array.prototype.include = function(val) {
   return this.index(val) !== null;
 }

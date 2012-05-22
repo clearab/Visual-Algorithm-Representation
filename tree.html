@@ -30,9 +30,9 @@
         <p>
           <button type="button" onclick="insertSingleNode()">Insert</button>
           <input type="text" id="insertValue" size="3" onchange=""/>
-          <button type="button" onclick="pause()">Pause/Resume</button>
+          <button type="button" onclick="deleteSingleNode()">Delete</button>
           &nbsp;
-          <button type="button" onclick="randomTree()">Random Tree</button>
+          <button type="button" onclick="randomTree(0)">Random Tree</button>
           <span>Tree Size:</span>
           <input id ="treeSize" type ="range" min ="1" max ="10" value="5" step="1" onchange="showValue(this.value,'treeSizeRange')" />
           <span id="treeSizeRange">5</span>
